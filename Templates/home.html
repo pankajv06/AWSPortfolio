@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Pankaj's Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="hero">
+    <h1>Welcome to Pankaj's Portfolio</h1>
+    <p>Choose the version that suits your perspective</p>
+    <div class="cta-container">
+      <a class="cta" href="{{ url_for('executive', filename='Executive.html') }}">Executive Version</a>
+      <a class="cta" href="{{ url_for('cinematic', filename='Cinematic.html') }}">Cinematic Version</a>
+    </div>
+  </div>
+</body>
+</html>
