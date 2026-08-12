@@ -16,3 +16,7 @@ def cinematic():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+@app.route("/resume")
+def resume():
+    return redirect(url_for("static", filename="Pankaj_Verma_Resume.pdf"))
