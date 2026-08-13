@@ -138,6 +138,47 @@ def analytics_engagement():
         "events": events
     }
 
+@app.route("/api/analytics/portfolio")
+def analytics_portfolio():
+    client = BetaAnalyticsDataClient()
+
+    request = RunReportRequest(
+        property="properties/549768617",
+        date_ranges=[
+            DateRange(start_date="7daysAgo", end_date="today")
+        ],
+        dimensions=[
+            Dimension(name="customEvent:view_type")
+        ],
+        metrics=[
+            Metric(name="eventCount"),
+            Metric(name="totalUsers")
+        ],
+        dimension_filter=FilterExpression(
+            filter=Filter(
+                field_name="eventName",
+                in_list_filter={
+                    "values": ["portfolio_view_click"]
+                }
+            )
+        )
+    )
+
+    response = client.run_report(request)
+
+    portfolio_views = []
+
+    for row in response.rows:
+        portfolio_views.append({
+            "view_type": row.dimension_values[0].value,
+            "clicks": int(row.metric_values[0].value),
+            "users": int(row.metric_values[1].value)
+        })
+
+    return {
+        "portfolio_views": portfolio_views
+    }
+
 if __name__ == "__main__":
     app.run(debug=True)
 
