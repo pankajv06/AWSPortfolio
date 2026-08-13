@@ -334,6 +334,14 @@ async function loadVisitorTrend() {
     });
 }
 
+async function loadRealtime() {
+    const data = await fetchJSON("/api/analytics/realtime");
+
+    const element = document.getElementById("live-users");
+
+    element.textContent = data.active_users.toLocaleString();
+}
+
 /* ==============================
    Dashboard initialization
    ============================== */
@@ -348,7 +356,8 @@ async function loadDashboard() {
             loadEngagement(),
             loadTechnology(),
             loadGeo(),
-            loadVisitorTrend()
+            loadVisitorTrend(),
+            loadRealtime()
         ]);
 
         console.log("Analytics dashboard loaded");
@@ -363,3 +372,7 @@ async function loadDashboard() {
 
 
 loadDashboard();
+setInterval(() => {
+    loadRealtime();
+    loadOverview();
+}, 60000);

@@ -3,6 +3,7 @@ from flask import Flask, render_template, redirect, url_for
 from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import (
     RunReportRequest,
+    RunRealtimeReportRequest,
     DateRange,
     Metric,
     Dimension,
@@ -281,6 +282,30 @@ def analytics_trend():
 
     return {
         "trend": trend
+    }
+
+@app.route("/api/analytics/realtime")
+def analytics_realtime():
+    client = BetaAnalyticsDataClient()
+
+    request = RunRealtimeReportRequest(
+        property="properties/549768617",
+        metrics=[
+            Metric(name="activeUsers")
+        ]
+    )
+
+    response = client.run_realtime_report(request)
+
+    active_users = 0
+
+    if response.rows:
+        active_users = int(
+            response.rows[0].metric_values[0].value
+        )
+
+    return {
+        "active_users": active_users
     }
 
 if __name__ == "__main__":
