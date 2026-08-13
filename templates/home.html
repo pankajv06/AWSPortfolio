@@ -4,34 +4,87 @@
 <head>
   <meta charset="UTF-8">
   <title>Pankaj's Portfolio</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-E80ZX1S79H"></script>
-  <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
 
-      gtag('config', 'G-E80ZX1S79H');
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-E80ZX1S79H');
+
+
+    /* ==============================
+       Portfolio Analytics
+       ============================== */
+
+    function trackPortfolioClick(view) {
+      if (typeof gtag === 'function') {
+        gtag('event', 'portfolio_view_click', {
+          view_type: view
+        });
+      }
+    }
+
+    function trackResumeClick() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'resume_click', {
+          page_location: window.location.href
+        });
+      }
+    }
+
+    function trackLinkedInClick() {
+      if (typeof gtag === 'function') {
+        gtag('event', 'linkedin_click', {
+          page_location: window.location.href
+        });
+      }
+    }
   </script>
   <!-- End Google Analytics -->
+
 </head>
+
 <body>
+
   <div class="hero">
+
     <h1>Welcome to Pankaj's Portfolio</h1>
+
     <p>Choose the version that suits your perspective</p>
+
     <div class="cta-container">
-      <a class="cta" href="{{ url_for('executive', filename='Executive.html') }}" onclick="trackPortfolioClick('executive')">Executive Version</a>
-      <a class="cta" href="{{ url_for('cinematic', filename='Cinematic.html') }}" onclick="trackPortfolioClick('cinematic')">Cinematic Version</a>
+
+      <a
+        class="cta"
+        href="{{ url_for('executive', filename='Executive.html') }}"
+        onclick="trackPortfolioClick('executive')"
+      >
+        Executive Version
+      </a>
+
+      <a
+        class="cta"
+        href="{{ url_for('cinematic', filename='Cinematic.html') }}"
+        onclick="trackPortfolioClick('cinematic')"
+      >
+        Cinematic Version
+      </a>
+
     </div>
+
   </div>
-<script>
-function trackPortfolioClick(view) {
-    gtag('event', 'portfolio_view_click', {
-        view_type: view
-    });
-}
-</script>
+
 </body>
 </html>
