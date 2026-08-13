@@ -66,25 +66,61 @@ body {
 }
 
 .kpi-card {
-    padding: 24px;
+    position: relative;
+    padding: 22px;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     background: rgba(255, 255, 255, 0.045);
     backdrop-filter: blur(10px);
+    transition: transform 0.2s ease, border-color 0.2s ease,
+                background 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.kpi-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .kpi-label {
     display: block;
     color: #9ca7bd;
-    font-size: 12px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    margin-bottom: 12px;
+}
+
+.kpi-icon {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, 0.07);
+    color: #aeb9ff;
+    font-size: 14px;
 }
 
 .kpi-card strong {
-    font-size: 32px;
+    display: block;
+    margin-top: 18px;
+    font-size: 34px;
+    line-height: 1;
     font-weight: 700;
+}
+
+.kpi-period {
+    display: block;
+    margin-top: 12px;
+    color: #69758d;
+    font-size: 10px;
 }
 
 /* DASHBOARD GRID */
