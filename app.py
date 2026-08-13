@@ -179,6 +179,75 @@ def analytics_portfolio():
         "portfolio_views": portfolio_views
     }
 
+@app.route("/api/analytics/geo")
+def analytics_geo():
+    client = BetaAnalyticsDataClient()
+
+    request = RunReportRequest(
+        property="properties/549768617",
+        date_ranges=[
+            DateRange(start_date="7daysAgo", end_date="today")
+        ],
+        dimensions=[
+            Dimension(name="country"),
+            Dimension(name="region")
+        ],
+        metrics=[
+            Metric(name="totalUsers")
+        ]
+    )
+
+    response = client.run_report(request)
+
+    locations = []
+
+    for row in response.rows:
+        locations.append({
+            "country": row.dimension_values[0].value,
+            "region": row.dimension_values[1].value,
+            "users": int(row.metric_values[0].value)
+        })
+
+    return {
+        "locations": locations
+    }
+
+
+@app.route("/api/analytics/technology")
+def analytics_technology():
+    client = BetaAnalyticsDataClient()
+
+    request = RunReportRequest(
+        property="properties/549768617",
+        date_ranges=[
+            DateRange(start_date="7daysAgo", end_date="today")
+        ],
+        dimensions=[
+            Dimension(name="deviceCategory"),
+            Dimension(name="browser"),
+            Dimension(name="operatingSystem")
+        ],
+        metrics=[
+            Metric(name="totalUsers")
+        ]
+    )
+
+    response = client.run_report(request)
+
+    technology = []
+
+    for row in response.rows:
+        technology.append({
+            "device": row.dimension_values[0].value,
+            "browser": row.dimension_values[1].value,
+            "os": row.dimension_values[2].value,
+            "users": int(row.metric_values[0].value)
+        })
+
+    return {
+        "technology": technology
+    }
+
 if __name__ == "__main__":
     app.run(debug=True)
 
