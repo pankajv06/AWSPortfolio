@@ -252,6 +252,37 @@ def analytics_technology():
         "technology": technology
     }
 
+@app.route("/api/analytics/trend")
+def analytics_trend():
+    client = BetaAnalyticsDataClient()
+
+    request = RunReportRequest(
+        property="properties/549768617",
+        date_ranges=[
+            DateRange(start_date="7daysAgo", end_date="today")
+        ],
+        dimensions=[
+            Dimension(name="date")
+        ],
+        metrics=[
+            Metric(name="totalUsers")
+        ]
+    )
+
+    response = client.run_report(request)
+
+    trend = []
+
+    for row in response.rows:
+        trend.append({
+            "date": row.dimension_values[0].value,
+            "users": int(row.metric_values[0].value)
+        })
+
+    return {
+        "trend": trend
+    }
+
 if __name__ == "__main__":
     app.run(debug=True)
 

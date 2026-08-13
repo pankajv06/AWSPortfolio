@@ -261,6 +261,57 @@ function formatEventName(name) {
     return names[name] || name;
 }
 
+async function loadVisitorTrend() {
+    const data = await fetchJSON("/api/analytics/trend");
+
+    const canvas = document.getElementById("visitorTrendChart");
+
+    if (!data.trend || data.trend.length === 0) {
+        return;
+    }
+
+    const labels = data.trend.map(item => {
+        const date = item.date;
+
+        return `${date.substring(4, 6)}/${date.substring(6, 8)}`;
+    });
+
+    const users = data.trend.map(item => item.users);
+
+    new Chart(canvas, {
+        type: "line",
+
+        data: {
+            labels: labels,
+
+            datasets: [{
+                label: "Users",
+                data: users,
+                tension: 0.35,
+                fill: true
+            }]
+        },
+
+        options: {
+            responsive: true,
+
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+}
 
 /* ==============================
    Dashboard initialization
@@ -275,7 +326,8 @@ async function loadDashboard() {
             loadPortfolio(),
             loadEngagement(),
             loadTechnology(),
-            loadGeo()
+            loadGeo(),
+            loadVisitorTrend()
         ]);
 
         console.log("Analytics dashboard loaded");
@@ -286,6 +338,7 @@ async function loadDashboard() {
 
     }
 }
+
 
 
 loadDashboard();

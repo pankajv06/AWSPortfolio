@@ -16,6 +16,9 @@
         rel="stylesheet"
         href="{{ url_for('static', filename='css/analytics.css') }}"
     >
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body>
@@ -83,14 +86,24 @@
                 <div class="dashboard-card portfolio-choice">
                     <div class="card-header">
                         <h2>Portfolio Choice</h2>
-                        <span>Executive vs Cinematic</span>
+                            <span>Executive vs Cinematic</span>
                     </div>
 
-                    <div id="portfolio-chart">
-                        Loading...
+                    <div class="chart-container">
+                        <canvas id="portfolioChart"></canvas>
                     </div>
                 </div>
+                
+                <div class="dashboard-card visitor-trend">
+                    <div class="card-header">
+                        <h2>Visitor Trend</h2>
+                        <span>Last 7 days</span>
+                    </div>
 
+                    <div class="chart-container">
+                        <canvas id="visitorTrendChart"></canvas>
+                    </div>
+                </div>
 
                 <div class="dashboard-card engagement">
                     <div class="card-header">
