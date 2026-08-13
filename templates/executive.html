@@ -202,8 +202,8 @@ footer{padding:30px 0 50px;text-align:center;color:var(--muted);font-size:12px}
 <div class="section-smile" style="max-width:620px;margin:0 auto 18px;text-align:left">🤝 <b>Fair warning:</b> I may ask about the roadmap, dependencies, risks, owners and rollback plan before we finish our coffee.</div>
 <p>Good. Those are usually the interesting ones.</p>
 <div class="actions" style="justify-content:center">
-<a class="btn primary" href="https://www.linkedin.com/in/pankaj-verma-027a7b3b" target="_blank" rel="noopener">Let's connect ↗</a>
-<a class="btn" href="{{ url_for('static', filename='Pankaj_Verma_Resume.pdf') }}" target="_blank">View full resume</a>
+<a class="btn primary" href="https://www.linkedin.com/in/pankaj-verma-027a7b3b" target="_blank" rel="noopener" onclick="trackLinkedInClick()">Let's connect ↗</a>
+<a class="btn" href="{{ url_for('static', filename='Pankaj_Verma_Resume.pdf') }}" target="_blank" onclick="trackResumeClick()">View full resume</a>
 </div>
 </div></section>
 <footer>Pankaj Verma · Senior / Principal Technical Program Manager · Bangalore</footer>
@@ -212,6 +212,20 @@ footer{padding:30px 0 50px;text-align:center;color:var(--muted);font-size:12px}
 document.querySelectorAll("[data-scroll]").forEach(b=>b.addEventListener("click",()=>document.getElementById(b.dataset.scroll)?.scrollIntoView({behavior:"smooth"})));
 document.querySelectorAll(".case-toggle").forEach(b=>b.addEventListener("click",()=>{const e=document.getElementById(b.dataset.case);e.classList.toggle("open");b.textContent=e.classList.contains("open")?"Hide case ↑":"View case →"}));
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));t.classList.add("active");const f=t.dataset.filter;document.querySelectorAll(".project").forEach(p=>p.style.display=f==="all"||p.dataset.cat.includes(f)?"":"none")}));
+</script>
+<script>
+function trackResumeClick() {
+    gtag('event', 'resume_click', {
+        page_location: window.location.href
+    });
+}
+</script>
+<script>
+function trackLinkedInClick() {
+    gtag('event', 'linkedin_click', {
+        page_location: window.location.href
+    });
+}
 </script>
 </body>
 </html>

@@ -22,9 +22,16 @@
     <h1>Welcome to Pankaj's Portfolio</h1>
     <p>Choose the version that suits your perspective</p>
     <div class="cta-container">
-      <a class="cta" href="{{ url_for('executive', filename='Executive.html') }}">Executive Version</a>
-      <a class="cta" href="{{ url_for('cinematic', filename='Cinematic.html') }}">Cinematic Version</a>
+      <a class="cta" href="{{ url_for('executive', filename='Executive.html') }}" onclick="trackPortfolioClick('executive')">Executive Version</a>
+      <a class="cta" href="{{ url_for('cinematic', filename='Cinematic.html') }}" onclick="trackPortfolioClick('cinematic')">Cinematic Version</a>
     </div>
   </div>
+<script>
+function trackPortfolioClick(view) {
+    gtag('event', 'portfolio_view_click', {
+        view_type: view
+    });
+}
+</script>
 </body>
 </html>
