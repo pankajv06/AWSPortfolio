@@ -31,20 +31,30 @@ def analytics_overview():
             DateRange(start_date="7daysAgo", end_date="today")
         ],
         metrics=[
-            Metric(name="activeUsers")
+            Metric(name="activeUsers"),
+            Metric(name="totalUsers"),
+            Metric(name="sessions"),
+            Metric(name="screenPageViews")
         ]
     )
 
     response = client.run_report(request)
 
-    active_users = (
-        response.rows[0].metric_values[0].value
-        if response.rows
-        else "0"
-    )
+    if response.rows:
+        values = response.rows[0].metric_values
+
+        return {
+            "active_users": int(values[0].value),
+            "total_users": int(values[1].value),
+            "sessions": int(values[2].value),
+            "page_views": int(values[3].value)
+        }
 
     return {
-        "active_users": int(active_users)
+        "active_users": 0,
+        "total_users": 0,
+        "sessions": 0,
+        "page_views": 0
     }
 
 if __name__ == "__main__":
