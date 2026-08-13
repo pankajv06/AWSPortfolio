@@ -90,11 +90,15 @@ async function loadPortfolio() {
         return;
     }
 
-    const labels = data.portfolio_views.map(item =>
+    const validPortfolioViews = data.portfolio_views.filter(
+        item => item.view_type && item.view_type.trim() !== ""
+    );
+
+    const labels = validPortfolioViews.map(item =>
         item.view_type.charAt(0).toUpperCase() + item.view_type.slice(1)
     );
 
-    const values = data.portfolio_views.map(item => item.clicks);
+    const values = validPortfolioViews.map(item => item.clicks);
 
     new Chart(canvas, {
         type: "doughnut",
