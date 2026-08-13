@@ -4,7 +4,8 @@ from google.analytics.data_v1beta import BetaAnalyticsDataClient
 from google.analytics.data_v1beta.types import (
     RunReportRequest,
     DateRange,
-    Metric
+    Metric,
+    Dimension
 )
 
 app = Flask(__name__)
@@ -55,6 +56,39 @@ def analytics_overview():
         "total_users": 0,
         "sessions": 0,
         "page_views": 0
+    }
+
+@app.route("/api/analytics/pages")
+def analytics_pages():
+    client = BetaAnalyticsDataClient()
+
+    request = RunReportRequest(
+        property="properties/549768617",
+        date_ranges=[
+            DateRange(start_date="7daysAgo", end_date="today")
+        ],
+        dimensions=[
+            Dimension(name="pagePath")
+        ],
+        metrics=[
+            Metric(name="screenPageViews"),
+            Metric(name="totalUsers")
+        ]
+    )
+
+    response = client.run_report(request)
+
+    pages = []
+
+    for row in response.rows:
+        pages.append({
+            "page": row.dimension_values[0].value,
+            "page_views": int(row.metric_values[0].value),
+            "users": int(row.metric_values[1].value)
+        })
+
+    return {
+        "pages": pages
     }
 
 if __name__ == "__main__":
