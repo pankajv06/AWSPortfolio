@@ -1,3 +1,5 @@
+venv312/
+ssh
 venv/
 __pycache__/
 *.pyc
