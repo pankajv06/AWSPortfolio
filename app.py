@@ -5,7 +5,9 @@ from google.analytics.data_v1beta.types import (
     RunReportRequest,
     DateRange,
     Metric,
-    Dimension
+    Dimension,
+    FilterExpression,
+    Filter
 )
 
 app = Flask(__name__)
@@ -89,6 +91,51 @@ def analytics_pages():
 
     return {
         "pages": pages
+    }
+
+@app.route("/api/analytics/engagement")
+def analytics_engagement():
+    client = BetaAnalyticsDataClient()
+
+    request = RunReportRequest(
+        property="properties/549768617",
+        date_ranges=[
+            DateRange(start_date="7daysAgo", end_date="today")
+        ],
+        dimensions=[
+            Dimension(name="eventName")
+        ],
+        metrics=[
+            Metric(name="eventCount"),
+            Metric(name="totalUsers")
+        ],
+        dimension_filter=FilterExpression(
+            filter=Filter(
+                field_name="eventName",
+                in_list_filter={
+                    "values": [
+                        "portfolio_view_click",
+                        "resume_click",
+                        "linkedin_click"
+                    ]
+                }
+            )
+        )
+    )
+
+    response = client.run_report(request)
+
+    events = []
+
+    for row in response.rows:
+        events.append({
+            "event": row.dimension_values[0].value,
+            "count": int(row.metric_values[0].value),
+            "users": int(row.metric_values[1].value)
+        })
+
+    return {
+        "events": events
     }
 
 if __name__ == "__main__":
