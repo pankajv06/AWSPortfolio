@@ -24,6 +24,10 @@ def executive():
 def cinematic():
     return render_template("cinematic.html")
 
+@app.route("/analytics")
+def analytics_dashboard():
+    return render_template("analytics.html")
+
 @app.route("/api/analytics/overview")
 def analytics_overview():
     client = BetaAnalyticsDataClient()
