@@ -82,47 +82,64 @@ async function loadPages() {
 async function loadPortfolio() {
     const data = await fetchJSON("/api/analytics/portfolio");
 
-    const container = document.getElementById("portfolio-chart");
+    const canvas = document.getElementById("portfolioChart");
 
     if (!data.portfolio_views || data.portfolio_views.length === 0) {
-        container.innerHTML =
+        canvas.parentElement.innerHTML =
             '<div class="loading">No portfolio data available</div>';
         return;
     }
 
-    let html = "";
+    const labels = data.portfolio_views.map(item =>
+        item.view_type.charAt(0).toUpperCase() + item.view_type.slice(1)
+    );
 
-    data.portfolio_views.forEach(item => {
-        html += `
-            <div style="margin-bottom: 20px;">
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    margin-bottom:7px;
-                    font-size:13px;
-                ">
-                    <span>${item.view_type}</span>
-                    <span>${item.clicks} clicks · ${item.users} users</span>
-                </div>
+    const values = data.portfolio_views.map(item => item.clicks);
 
-                <div style="
-                    height:8px;
-                    background:rgba(255,255,255,0.08);
-                    border-radius:10px;
-                    overflow:hidden;
-                ">
-                    <div style="
-                        width:${Math.min(item.clicks * 10, 100)}%;
-                        height:100%;
-                        background:#6c7cff;
-                        border-radius:10px;
-                    "></div>
-                </div>
-            </div>
-        `;
+    new Chart(canvas, {
+        type: "doughnut",
+
+        data: {
+            labels: labels,
+
+            datasets: [{
+                data: values
+            }]
+        },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+
+            plugins: {
+                legend: {
+                    position: "bottom",
+
+                    labels: {
+                        padding: 20,
+                        usePointStyle: true
+                    }
+                },
+
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const total = context.dataset.data
+                                .reduce((sum, value) => sum + value, 0);
+
+                            const percentage = total
+                                ? Math.round((context.raw / total) * 100)
+                                : 0;
+
+                            return `${context.label}: ${context.raw} clicks (${percentage}%)`;
+                        }
+                    }
+                }
+            },
+
+            cutout: "68%"
+        }
     });
-
-    container.innerHTML = html;
 }
 
 

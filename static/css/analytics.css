@@ -159,6 +159,12 @@ body {
     font-size: 13px;
 }
 
+.chart-container {
+    position: relative;
+    height: 280px;
+    width: 100%;
+}
+
 /* RESPONSIVE */
 
 @media (max-width: 900px) {
